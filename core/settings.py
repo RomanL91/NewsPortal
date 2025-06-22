@@ -38,9 +38,13 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # библиотеки
+    "django_mptt_admin",
     "django_ckeditor_5",
+    "reversion",
+    "parler",
     # локальные приложения
     "users",
+    "app_content",
 ]
 
 MIDDLEWARE = [
@@ -119,7 +123,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = "static/"
+# STATIC_URL = "static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -139,7 +143,40 @@ TIME_ZONE = "Asia/Almaty"  # ваш часовой пояс
 
 LANGUAGES = [
     ("ru", "Русский"),
+    ("kk", "Қазақша"),
     ("en", "English"),  # опционально оставляем английский как fallback
 ]
 
 LOCALE_PATHS = [BASE_DIR / "locale"]
+
+from .ckediror_settings import (
+    customColorPalette,
+    CKEDITOR_5_CONFIGS,
+    # CKEDITOR_5_CUSTOM_CSS,
+    # CKEDITOR_5_FILE_STORAGE,
+)
+
+customColorPalette = customColorPalette
+CKEDITOR_5_CONFIGS = CKEDITOR_5_CONFIGS
+# CKEDITOR_5_CUSTOM_CSS = CKEDITOR_5_CUSTOM_CSS
+# CKEDITOR_5_FILE_STORAGE = CKEDITOR_5_FILE_STORAGE
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
+STATIC_URL = "/static/"  # URL, по которому браузер запрашивает файлы
+STATIC_ROOT = BASE_DIR / "staticfiles"  # каталог, куда collectstatic их скопирует
+
+
+PARLER_LANGUAGES = {
+    # «None» — глобальный набор языков
+    None: (
+        {"code": "ru"},
+        {"code": "kk"},
+        {"code": "en"},
+    ),
+    "default": {
+        "fallback": "ru",  # порядок отката, если нет перевода
+        "hide_untranslated": False,  # = показывать obj и без перевода
+    },
+}
