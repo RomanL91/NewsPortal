@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-zoxz^(^%&(mn73=sn4&h96rnx7#%pty+s3!c%%on9ofw=-s+z6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -180,3 +180,18 @@ PARLER_LANGUAGES = {
         "hide_untranslated": False,  # = показывать obj и без перевода
     },
 }
+
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://185.100.67.246:9999",
+]
+CORS_ALLOWED_ORIGINS = [
+    "https://sck.kz",
+]
+CSRF_COOKIE_SECURE = False
+CSRF_COOKIE_HTTPONLY = False
+CSRF_COOKIE_SAMESITE = "Lax"
