@@ -9,6 +9,12 @@ readme = "README.md"
 python = "^3.11"
 django = "^5.2.3"
 django-ckeditor-5 = "^0.2.18"
+django-mptt = "^0.17.0"
+django-taggit = "^6.1.0"
+django-reversion = "^5.1.0"
+django-taggit-autosuggest = "^0.4.2"
+django-mptt-admin = "^2.8.0"
+django-parler = "^2.3"
 
 
 [build-system]

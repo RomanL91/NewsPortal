@@ -53,6 +53,110 @@ Pillow = "*"
 dev = ["bandit[toml] (==1.8.2)", "black (==25.1.0)", "codespell (==2.4.1)", "coverage (==7.6.10)", "mypy (==1.15.0)", "mypy-extensions (==1.0.0)", "pytest (==8.3.4)", "pytest-cov (==6.0.0)", "pytest-django (==4.9.0)", "pytest-mock (==3.14.0)", "safety (==3.2.14)", "types-setuptools (==75.8.0.20250110)", "typing_extensions (==4.12.2)"]
 
 [[package]]
+name = "django-js-asset"
+version = "3.1.2"
+description = "script tag with additional attributes for django.forms.Media"
+optional = false
+python-versions = ">=3.10"
+files = [
+    {file = "django_js_asset-3.1.2-py3-none-any.whl", hash = "sha256:b5ffe376aebbd73b7af886d675ac9f43ca63b39540190fa8409c9f8e79145f68"},
+    {file = "django_js_asset-3.1.2.tar.gz", hash = "sha256:1fc7584199ed1941ed7c8e7b87ca5524bb0f2ba941561d2a104e88ee9f07bedd"},
+]
+
+[package.dependencies]
+django = ">=4.2"
+
+[package.extras]
+tests = ["coverage"]
+
+[[package]]
+name = "django-mptt"
+version = "0.17.0"
+description = "Utilities for implementing Modified Preorder Tree Traversal with your Django Models and working with trees of Model instances."
+optional = false
+python-versions = ">=3.9"
+files = [
+    {file = "django_mptt-0.17.0-py3-none-any.whl", hash = "sha256:e77dd4b4d0de14f50239b0900def44c1d31403664ab3682b80b27fa1319fe7f0"},
+    {file = "django_mptt-0.17.0.tar.gz", hash = "sha256:e2dca00536450b91bdc80d8fc1454993b84307728394ae42c72947fc09574d3d"},
+]
+
+[package.dependencies]
+django-js-asset = "*"
+
+[package.extras]
+tests = ["coverage[toml]", "mock-django"]
+
+[[package]]
+name = "django-mptt-admin"
+version = "2.8.0"
+description = "Django-mptt-admin provides a nice Django Admin interface for Mptt models"
+optional = false
+python-versions = "*"
+files = [
+    {file = "django_mptt_admin-2.8.0-py2.py3-none-any.whl", hash = "sha256:3843488f21a8c629ef0862a00e76851bc80d4bfa43f3a08d0cb8f3cf4fb69aa9"},
+    {file = "django_mptt_admin-2.8.0.tar.gz", hash = "sha256:9e63d4616ed53c02004ed334073a22d0608c70c90702e5b0e83a564c385f431d"},
+]
+
+[package.dependencies]
+django-mptt = "*"
+
+[[package]]
+name = "django-parler"
+version = "2.3"
+description = "Simple Django model translations without nasty hacks, featuring nice admin integration."
+optional = false
+python-versions = "*"
+files = [
+    {file = "django-parler-2.3.tar.gz", hash = "sha256:2c8f5012ceb5e49af93b16ea3fe4d0c83d70b91b2d0f470c05d7d742b6f3083d"},
+    {file = "django_parler-2.3-py3-none-any.whl", hash = "sha256:8f6c8061e4b5690f1ee2d8e5760940ef06bf78a5bfa033d11178377559c749cf"},
+]
+
+[package.dependencies]
+Django = ">=2.2"
+
+[[package]]
+name = "django-reversion"
+version = "5.1.0"
+description = "An extension to the Django web framework that provides version control for model instances."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "django_reversion-5.1.0-py3-none-any.whl", hash = "sha256:084d4f117d9e2b4e8dfdfaad83ebb34410a03eed6071c96089e6811fdea82ad3"},
+    {file = "django_reversion-5.1.0.tar.gz", hash = "sha256:3309821e5b6fceedcce6b6975f1a9c7fab6ae7c7d0e1276a90e345946fa0dcb8"},
+]
+
+[package.dependencies]
+django = ">=4.2"
+
+[[package]]
+name = "django-taggit"
+version = "6.1.0"
+description = "django-taggit is a reusable Django application for simple tagging."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "django_taggit-6.1.0-py3-none-any.whl", hash = "sha256:ab776264bbc76cb3d7e49e1bf9054962457831bd21c3a42db9138b41956e4cf0"},
+    {file = "django_taggit-6.1.0.tar.gz", hash = "sha256:c4d1199e6df34125dd36db5eb0efe545b254dec3980ce5dd80e6bab3e78757c3"},
+]
+
+[package.dependencies]
+Django = ">=4.1"
+
+[[package]]
+name = "django-taggit-autosuggest"
+version = "0.4.2"
+description = "Autosuggestions for django-taggit"
+optional = false
+python-versions = "*"
+files = [
+    {file = "django_taggit_autosuggest-0.4.2-py3-none-any.whl", hash = "sha256:e7c2d6f51708d947a099104f960771f86da7d224f9e979c7056aa43ff2d9958b"},
+    {file = "django_taggit_autosuggest-0.4.2.tar.gz", hash = "sha256:0a0adb23cead8dfea0cf9e2c268f5ca7079e985d1f6db8c54702e4265ee38616"},
+]
+
+[package.dependencies]
+django-taggit = "*"
+
+[[package]]
 name = "pillow"
 version = "11.2.1"
 description = "Python Imaging Library (Fork)"
@@ -180,4 +284,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "70d804401216707101834ccd78bf88b5972521137e6ef7b7d3ac236c239c8c3b"
+content-hash = "c759d506329f2cc37b47f0ceedeaae9ad18bca6687418890c0893a4d921f1b36"
