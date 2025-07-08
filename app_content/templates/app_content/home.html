@@ -1,0 +1,95 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{% trans "Главная" %}</title>
+</head>
+
+<body>
+    <!-- 🌐 Переключатель языка -->
+    <form action="{% url 'set_language' %}" method="post">
+        {% csrf_token %}
+        {% get_current_language as LANGUAGE_CODE %}
+        {% get_available_languages as LANGUAGES %}
+        <select name="language">
+            {% for lang_code, lang_name in LANGUAGES %}
+            <option value="{{ lang_code }}" "{% if lang_code == LANGUAGE_CODE %}" selected"{% endif %}">
+                {{ lang_name }}
+            </option>
+            {% endfor %}
+        </select>
+        <button type="submit">{% trans "Выбрать язык" %}</button>
+    </form>
+
+    <hr>
+
+    <!-- 📄 Выбранный тег -->
+    {% if current_tag %}
+    <p><b>{% trans "Выбран тег" %}:</b> {{ current_tag.name }}</p>
+    {% endif %}
+
+    <!-- 📰 Последние статьи -->
+    <h2>{% trans "Последние статьи" %}</h2>
+    <ul>
+        {% for article in recent_articles %}
+        <li>
+            {% if article.cover_image %}
+            <img src="{{ article.cover_image.url }}" alt="{{ article.title }}" width="150">
+            {% endif %}
+            <a href="{% url 'article_detail' slug=article.slug %}">{{ article.title }}</a><br>
+            <small>{% trans "Опубликовано" %}: {{ article.published_at|default:article.created_at }}</small>
+        </li>
+        {% empty %}
+        <li>{% trans "Нет статей" %}</li>
+        {% endfor %}
+    </ul>
+
+    <!-- 📆 Пагинация -->
+    <div>
+        {% if recent_articles.has_previous %}
+        <a href="?page={{ recent_articles.previous_page_number }}">{% trans "Назад" %}</a>
+        {% endif %}
+
+        <span>{% trans "Страница" %} {{ recent_articles.number }} {% trans "из" %} {{ recent_articles.paginator.num_pages }}</span>
+
+        {% if recent_articles.has_next %}
+        <a href="?page={{ recent_articles.next_page_number }}">{% trans "Вперед" %}</a>
+        {% endif %}
+    </div>
+
+    <hr>
+
+    <!-- 📂 Рубрики -->
+<h2>{% trans "Рубрики" %}</h2>
+<ul>
+    {% for category in categories %}
+    <li>
+        <a href="{% url 'articles_by_category' slug=category.slug %}">
+            {{ category.name }}
+        </a>
+    </li>
+    {% empty %}
+    <li>{% trans "Нет рубрик" %}</li>
+    {% endfor %}
+</ul>
+
+    <hr>
+
+    <!-- 🔖 Теги -->
+<h2>{% trans "Теги" %}</h2>
+<ul>
+    {% for tag in tags %}
+    <li>
+        <a href="{% url 'articles_by_tag' slug=tag.slug %}">
+            {{ tag.name }}
+        </a>
+    </li>
+    {% empty %}
+    <li>{% trans "Нет тегов" %}</li>
+    {% endfor %}
+</ul>
+</body>
+
+</html>

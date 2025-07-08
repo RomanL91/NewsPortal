@@ -1,0 +1,27 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ category.name }}</title>
+</head>
+<body>
+    <h1>{% trans "Рубрика" %}: {{ category.name }}</h1>
+
+    <ul>
+        {% for article in articles %}
+        <li>
+            {% if article.cover_image %}
+                <img src="{{ article.cover_image.url }}" width="150">
+            {% endif %}
+            <a href="{% url 'article_detail' slug=article.slug %}">{{ article.title }}</a><br>
+            <small>{% trans "Опубликовано" %}: {{ article.published_at|default:article.created_at }}</small>
+        </li>
+        {% empty %}
+        <li>{% trans "Нет статей в этой рубрике" %}</li>
+        {% endfor %}
+    </ul>
+
+    <p><a href="{% url 'home' %}">{% trans "← На главную" %}</a></p>
+</body>
+</html>

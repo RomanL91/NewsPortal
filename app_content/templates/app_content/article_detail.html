@@ -1,0 +1,47 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ article.title }}</title>
+</head>
+<body>
+    <p><a href="{% url 'home' %}">← {% trans "На главную" %}</a></p>
+
+    <h1>{{ article.title }}</h1>
+
+    {% if article.cover_image %}
+    <img src="{{ article.cover_image.url }}" alt="{{ article.title }}" width="600">
+    {% endif %}
+
+    <p><small>
+        {% trans "Автор" %}: {{ article.author }} | 
+        {% trans "Опубликовано" %}: {{ article.published_at|default:article.created_at }} |
+        {% trans "Просмотры" %}: {{ article.views_count }}
+    </small></p>
+
+    <hr>
+
+    <div>
+        {{ article.content|safe }}
+    </div>
+
+    <hr>
+
+    {% if article.tags.all %}
+    <p><strong>{% trans "Теги" %}:</strong>
+        {% for tag in article.tags.all %}
+        <a href="{% url 'articles_by_tag' slug=tag.slug %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+    </p>
+    {% endif %}
+
+    {% if article.category.all %}
+    <p><strong>{% trans "Рубрики" %}:</strong>
+        {% for cat in article.category.all %}
+        <a href="{% url 'articles_by_category' slug=cat.slug %}">{{ cat.name }}</a>{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+    </p>
+    {% endif %}
+</body>
+</html>
