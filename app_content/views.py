@@ -1,6 +1,3 @@
-from django.utils import timezone
-from django.core.paginator import Paginator
-from django.db.models import OuterRef, Subquery
 from django.shortcuts import render, get_object_or_404
 
 from app_content.models.tag import Tag
