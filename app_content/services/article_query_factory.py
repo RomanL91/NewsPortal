@@ -25,7 +25,7 @@ class ArticleQuerySetFactory:
         self.qs = self.qs.filter(category=category)
         return self
 
-    def recent_articles(self, page_number, per_page=5):
+    def recent_articles(self, page_number, per_page=1):
         paginator = Paginator(
             self.qs.order_by("-published_at", "-created_at"), per_page
         )

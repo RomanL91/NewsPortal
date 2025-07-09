@@ -1,0 +1,61 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{{ block.super }}{% endblock %}</title>
+</head>
+<body>
+    <!-- 🔝 Шапка -->
+    <header>
+        <div>
+            <a href="{% url 'home' %}"><strong>LOGO</strong></a>
+        </div>
+
+        <nav>
+            {% for category in categories %}
+                <a href="{% url 'articles_by_category' slug=category.slug %}">{{ category.name }}</a>
+            {% endfor %}
+        </nav>
+
+        <!-- 🔎 Поиск -->
+
+
+        <!-- 🌍 Переключение языка -->
+        <form action="{% url 'set_language' %}" method="post">
+            {% csrf_token %}
+            {% get_current_language as LANGUAGE_CODE %}
+            {% get_available_languages as LANGUAGES %}
+            <select name="language" onchange="this.form.submit()">
+                {% for lang_code, lang_name in LANGUAGES %}
+                <option value="{{ lang_code }}"{% if lang_code == LANGUAGE_CODE %} selected{% endif %}>
+                    {{ lang_name }}
+                </option>
+                {% endfor %}
+            </select>
+        </form>
+    </header>
+
+    <hr>
+
+    <!-- 📄 Контент -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <hr>
+
+    <!-- 🔻 Подвал -->
+    <footer>
+        <div>
+            <h4>{% trans "Контакты" %}</h4>
+            <p>Телефон: +7 (XXX) XXX-XX-XX</p>
+            <p>Email: example@example.com</p>
+        </div>
+        <div>
+            <h4>{% trans "Соцсети" %}</h4>
+            <p><a href="#">Instagram</a> | <a href="#">Telegram</a> | <a href="#">VK</a></p>
+        </div>
+    </footer>
+</body>
+</html>
