@@ -90,7 +90,7 @@ class ArticleAdmin(TranslatableAdmin, VersionAdmin):
         if versions.count() < 2:
             return "Нет истории изменений."
 
-        IGNORE_FIELDS = {"updated_at", "created_at", "id"}
+        IGNORE_FIELDS = {"cover_thumbnail", "updated_at", "created_at", "id"}
 
         lines = []
         versions = list(versions)

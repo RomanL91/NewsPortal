@@ -1,44 +1,39 @@
+from django.utils import timezone
 from django.core.paginator import Paginator
+from django.db.models import OuterRef, Subquery
 from django.shortcuts import render, get_object_or_404
 
 from app_content.models.tag import Tag
 from app_content.models.article import Article
 from app_content.models.category import Category
 
+from app_content.services.article_query_factory import ArticleQuerySetFactory
+
 
 def home_view(request, slug=None):
     categories = Category.objects.prefetch_related("articles").all()
     tags = Tag.objects.all()
 
+    factory = ArticleQuerySetFactory()
+
     if slug:
         tag = get_object_or_404(Tag, translations__slug=slug)
-        all_articles = (
-            tag.articles.language()
-            .filter(status="published")
-            .order_by("-published_at", "-created_at")
-        )
+        factory.filter_by_tag(tag)
     else:
         tag = None
-        all_articles = (
-            Article.objects.language()
-            .filter(status="published")
-            .order_by("-published_at", "-created_at")
-        )
 
-    paginator = Paginator(all_articles, 5)
     page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
+    context = {
+        "categories": categories,
+        "tags": tags,
+        "current_tag": tag,
+        "recent_articles": factory.recent_articles(page_number),
+        "latest_articles": factory.latest_articles(),
+        "last_by_authors": factory.last_articles_by_authors(),
+        "featured_articles": factory.featured_articles(),
+    }
 
-    return render(
-        request,
-        "app_content/home.html",
-        {
-            "categories": categories,
-            "tags": tags,
-            "recent_articles": page_obj,
-            "current_tag": tag,
-        },
-    )
+    return render(request, "app_content/home.html", context)
 
 
 def articles_by_category(request, slug):
