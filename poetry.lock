@@ -60,6 +60,21 @@ argon2 = ["argon2-cffi (>=19.1.0)"]
 bcrypt = ["bcrypt"]
 
 [[package]]
+name = "django-browser-reload"
+version = "1.18.0"
+description = "Automatically reload your browser in development."
+optional = false
+python-versions = ">=3.9"
+files = [
+    {file = "django_browser_reload-1.18.0-py3-none-any.whl", hash = "sha256:ed4cc2fb83c3bf6c30b54107a1a6736c0b896e62e4eba666d81005b9f2ecf6f8"},
+    {file = "django_browser_reload-1.18.0.tar.gz", hash = "sha256:c5f0b134723cbf2a0dc9ae1ee1d38e42db28fe23c74cdee613ba3ef286d04735"},
+]
+
+[package.dependencies]
+asgiref = ">=3.6"
+django = ">=4.2"
+
+[[package]]
 name = "django-ckeditor-5"
 version = "0.2.18"
 description = "CKEditor 5 for Django."
@@ -180,6 +195,24 @@ files = [
 
 [package.dependencies]
 django-taggit = "*"
+
+[[package]]
+name = "django-tailwind"
+version = "4.2.0"
+description = "Tailwind CSS Framework for Django projects"
+optional = false
+python-versions = "<4.0,>=3.10"
+files = [
+    {file = "django_tailwind-4.2.0-py3-none-any.whl", hash = "sha256:ff40ccb263faefac555fbaa340d6014f2b07fee6be2c8d5659f2cd63dbce02e9"},
+    {file = "django_tailwind-4.2.0.tar.gz", hash = "sha256:60bae45a9981bdf3ebaaa4a8e588533327c90e5857a64f57c26a39b7f234ac0e"},
+]
+
+[package.dependencies]
+django = ">=4.2.20"
+django-browser-reload = {version = ">=1.18.0,<2.0.0", optional = true, markers = "extra == \"reload\""}
+
+[package.extras]
+reload = ["django-browser-reload (>=1.18.0,<2.0.0)"]
 
 [[package]]
 name = "h11"
@@ -338,4 +371,4 @@ standard = ["colorama (>=0.4)", "httptools (>=0.6.3)", "python-dotenv (>=0.13)",
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "276f0705f60ed90f297ce706480c4af43e007f57b861d921bfbf2da21363a7fd"
+content-hash = "4a88f3b449716f0b2596f7bfd5566374f62ceeea999e5e390ebb713074245920"

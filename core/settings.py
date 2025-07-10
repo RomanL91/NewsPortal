@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     "django_ckeditor_5",
     "reversion",
     "parler",
+    "tailwind",
+    "theme",
     # локальные приложения
     "users",
     "app_content",
@@ -195,3 +197,15 @@ CORS_ALLOWED_ORIGINS = [
 CSRF_COOKIE_SECURE = False
 CSRF_COOKIE_HTTPONLY = False
 CSRF_COOKIE_SAMESITE = "Lax"
+
+
+# Настройки для TailWind
+TAILWIND_APP_NAME = "theme"
+NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
+# Настройки DEBUG для TailWind
+if DEBUG:
+    # Add django_browser_reload only in DEBUG mode
+    INSTALLED_APPS += ["django_browser_reload"]
+    MIDDLEWARE += [
+        "django_browser_reload.middleware.BrowserReloadMiddleware",
+    ]

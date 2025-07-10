@@ -16,6 +16,7 @@ django-taggit-autosuggest = "^0.4.2"
 django-mptt-admin = "^2.8.0"
 django-parler = "^2.3"
 uvicorn = "^0.34.3"
+django-tailwind = {extras = ["reload"], version = "^4.2.0"}
 
 
 [build-system]
