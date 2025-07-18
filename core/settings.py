@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # библиотеки
+    "rest_framework",
     "django_mptt_admin",
     "django_ckeditor_5",
     "reversion",
@@ -132,6 +133,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # ============================== мои настройки ==============================
+REST_FRAMEWORK = {
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": 20,
+}
 
 AUTH_USER_MODEL = "users.User"
 

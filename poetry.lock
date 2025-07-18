@@ -140,6 +140,22 @@ files = [
 Django = ">=2.2"
 
 [[package]]
+name = "django-parler-rest"
+version = "2.2"
+description = "Multilingual support for django-rest-framework"
+optional = false
+python-versions = "*"
+files = [
+    {file = "django-parler-rest-2.2.tar.gz", hash = "sha256:58d0d7155964214dfbdb72783eff6a200c5e786e2d4f3cd74ea463d56cb10e9c"},
+    {file = "django_parler_rest-2.2-py2.py3-none-any.whl", hash = "sha256:3cba9a47ec64771394e99ca49f9bef6f7dd76c1e39634fd634d2c1050fb9630a"},
+]
+
+[package.dependencies]
+django = ">=2.2"
+django-parler = ">=1.9.2"
+djangorestframework = ">=3.5"
+
+[[package]]
 name = "django-reversion"
 version = "5.1.0"
 description = "An extension to the Django web framework that provides version control for model instances."
@@ -180,6 +196,20 @@ files = [
 
 [package.dependencies]
 django-taggit = "*"
+
+[[package]]
+name = "djangorestframework"
+version = "3.16.0"
+description = "Web APIs for Django, made easy."
+optional = false
+python-versions = ">=3.9"
+files = [
+    {file = "djangorestframework-3.16.0-py3-none-any.whl", hash = "sha256:bea7e9f6b96a8584c5224bfb2e4348dfb3f8b5e34edbecb98da258e892089361"},
+    {file = "djangorestframework-3.16.0.tar.gz", hash = "sha256:f022ff46613584de994c0c6a4aebbace5fd700555fbe9d33b865ebf173eba6c9"},
+]
+
+[package.dependencies]
+django = ">=4.2"
 
 [[package]]
 name = "h11"
@@ -338,4 +368,4 @@ standard = ["colorama (>=0.4)", "httptools (>=0.6.3)", "python-dotenv (>=0.13)",
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "276f0705f60ed90f297ce706480c4af43e007f57b861d921bfbf2da21363a7fd"
+content-hash = "8eb71e341d06435d4bbb82111193a17702afa49747dfc2bb980287a997b8224f"

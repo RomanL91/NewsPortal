@@ -16,6 +16,8 @@ django-taggit-autosuggest = "^0.4.2"
 django-mptt-admin = "^2.8.0"
 django-parler = "^2.3"
 uvicorn = "^0.34.3"
+djangorestframework = "^3.16.0"
+django-parler-rest = "^2.2"
 
 
 [build-system]
