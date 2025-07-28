@@ -79,17 +79,6 @@ TEMPLATES = [
 WSGI_APPLICATION = "core.wsgi.application"
 
 
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
-
-
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
@@ -133,6 +122,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # ============================== мои настройки ==============================
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "PAGE_SIZE": 20,
@@ -142,6 +136,10 @@ AUTH_USER_MODEL = "users.User"
 
 USE_I18N = True  # включает механизм переводов
 USE_L10N = True  # форматирование дат/чисел
+
+LOCALE_PATHS = [
+    BASE_DIR / "locale",
+]
 
 LANGUAGE_CODE = "ru"  # язык по умолчанию
 TIME_ZONE = "Asia/Almaty"  # ваш часовой пояс
@@ -178,7 +176,7 @@ PARLER_LANGUAGES = {
     None: (
         {"code": "ru"},
         {"code": "kk"},
-        {"code": "en"},
+        # {"code": "en"},
     ),
     "default": {
         "fallback": "ru",  # порядок отката, если нет перевода
@@ -200,3 +198,14 @@ CORS_ALLOWED_ORIGINS = [
 CSRF_COOKIE_SECURE = False
 CSRF_COOKIE_HTTPONLY = False
 CSRF_COOKIE_SAMESITE = "Lax"
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("POSTGRES_DB", "MyNewsPortalBD"),
+        "USER": os.getenv("POSTGRES_USER", "MyNewsPortalUser"),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD", "MyNewsPortalPassword"),
+        "HOST": os.getenv("POSTGRES_HOST", "news_portal_database"),
+        "PORT": os.getenv("POSTGRES_PORT", "6789"),
+    }
+}

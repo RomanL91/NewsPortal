@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from parler.utils.context import switch_language
 from app_content.models.article import Article
 from app_content.models.tag import Tag
 from app_content.models.category import Category
@@ -38,7 +37,12 @@ class CategorySerializer(TranslationAwareSerializerMixin, serializers.ModelSeria
 class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "first_name", "last_name"]
+        fields = [
+            "id",
+            "first_name",
+            "last_name",
+            "photo",
+        ]
 
 
 class ArticleListSerializer(
@@ -46,6 +50,7 @@ class ArticleListSerializer(
 ):
     title = serializers.SerializerMethodField()
     slug = serializers.SerializerMethodField()
+    author = AuthorSerializer()
 
     get_title = create_translated_getter("title")
     get_slug = create_translated_getter("slug")
@@ -57,6 +62,7 @@ class ArticleListSerializer(
             "title",
             "slug",
             "cover_thumbnail",
+            "author",
             "published_at",
             "views_count",
         ]

@@ -18,20 +18,22 @@ from app_content.forms.category import CategoryAdminForm
 
 
 @admin.register(Article)
-class ArticleAdmin(TranslatableAdmin, VersionAdmin):
+class ArticleAdmin(TranslatableAdmin, VersionAdmin, admin.ModelAdmin):
     form = ArticleAdminForm
 
     readonly_fields = (
         "views_count",
         "cover_preview",
-        # "thumbnail_preview",
+        "thumbnail_preview",
         "article_history_display",
+        "created_at",
+        "updated_at",
     )
     list_display = (
         "title",
         "status",
-        "author",
         "published_at",
+        "author",
         "views_count",
         "thumbnail_preview",
         # "cover_preview",
@@ -47,6 +49,7 @@ class ArticleAdmin(TranslatableAdmin, VersionAdmin):
         "translations__summary",
     )
     date_hierarchy = "created_at"
+    autocomplete_fields = ("tags", "category")
 
     def cover_preview(self, obj):
         if obj.cover_image:
@@ -122,6 +125,46 @@ class ArticleAdmin(TranslatableAdmin, VersionAdmin):
         )
 
     article_history_display.short_description = "История изменений"
+
+    fieldsets = (
+        (
+            _("Основная информация"),
+            {
+                "fields": (
+                    "title",
+                    "slug",
+                    "summary",
+                    "status",
+                    "author",
+                    "published_at",
+                )
+            },
+        ),
+        (_("Контент"), {"fields": ("content",)}),
+        (
+            _("Изображения"),
+            {
+                "fields": (
+                    "cover_image",
+                    "cover_preview",
+                    # "thumbnail_preview",
+                )
+            },
+        ),
+        (_("Категории и теги"), {"fields": ("category", "tags")}),
+        (
+            _("Системные данные"),
+            {
+                "classes": ("collapse",),
+                "fields": (
+                    "views_count",
+                    "article_history_display",
+                    "created_at",
+                    "updated_at",
+                ),
+            },
+        ),
+    )
 
 
 @admin.register(Category)

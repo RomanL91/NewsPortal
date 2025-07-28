@@ -1,6 +1,11 @@
+import os
 from django.contrib.auth.models import AbstractUser, Group
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
+
+def user_avatar_upload_path(instance, filename):
+    return os.path.join("avatars", f"user_{instance.id}", filename)
 
 
 class User(AbstractUser):
@@ -11,6 +16,13 @@ class User(AbstractUser):
 
     # пример дополнительного поля
     phone = models.CharField(_("phone number"), max_length=20, blank=True)
+    photo = models.ImageField(
+        _("Фотография"),
+        upload_to=user_avatar_upload_path,
+        blank=True,
+        null=True,
+        default="avatars/avatar_default.png",  # положи default-картинку в MEDIA_ROOT/avatars/
+    )
 
     class Meta:
         verbose_name = _("Пользователь")

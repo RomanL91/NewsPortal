@@ -18,14 +18,22 @@ from app_content.models.category import Category
 
 
 def validate_image_size(file):
+    """
+    Проверяет, что размер файла изображения не превышает 2 МБ.
+    """
     max_size_mb = 2
     if file.size > max_size_mb * 1024 * 1024:
         raise ValidationError(
-            f"Размер изображения не должен превышать {max_size_mb} МБ."
+            _(
+                f"Размер изображения {file.size / (1024*1024):.2f} МБ превышает допустимые {max_size_mb} МБ."
+            )
         )
 
 
 def validate_image_resolution(file):
+    """
+    Проверяет, что разрешение изображения не превышает 1920x1080 пикселей.
+    """
     max_width = 1920
     max_height = 1080
 
@@ -34,10 +42,12 @@ def validate_image_resolution(file):
         width, height = image.size
         if width > max_width or height > max_height:
             raise ValidationError(
-                f"Максимальное разрешение: {max_width}x{max_height}px."
+                _(
+                    f"Разрешение изображения {width}x{height}px превышает допустимые {max_width}x{max_height}px."
+                )
             )
     except Exception as e:
-        raise ValidationError(f"Не удалось обработать изображение. {e}")
+        raise ValidationError(_(f"Не удалось обработать изображение. Ошибка: {e}"))
 
 
 @reversion.register()
@@ -53,20 +63,43 @@ class Article(TranslatableModel):
         blank=True,
         related_name="articles",
         verbose_name=_("теги"),
+        help_text=_(
+            "Выберите один или несколько тегов, подходящих к содержанию статьи."
+        ),
     )
     category = models.ManyToManyField(
         Category,
         blank=True,
         related_name="articles",
         verbose_name=_("рубрики"),
+        help_text=_("Выберите одну или несколько рубрик, к которым относится статья."),
     )
 
     # — переводимые поля —
     translations = TranslatedFields(
-        title=models.CharField(_("заголовок"), max_length=250),
-        slug=models.SlugField(_("slug"), max_length=250, unique=True),
-        summary=models.TextField(_("краткое описание"), blank=True),
-        content=CKEditor5Field(_("контент"), config_name="extends"),
+        title=models.CharField(
+            _("заголовок"),
+            max_length=250,
+            help_text=_("Введите заголовок статьи, он будет отображаться на странице."),
+        ),
+        slug=models.SlugField(
+            _("slug"),
+            max_length=250,
+            unique=True,
+            help_text=_(
+                "Уникальный URL-идентификатор. Только латиница, цифры и дефисы."
+            ),
+        ),
+        summary=models.TextField(
+            _("краткое описание"),
+            blank=True,
+            help_text=_("Краткое описание статьи, используется в предпросмотре."),
+        ),
+        content=CKEditor5Field(
+            _("контент"),
+            config_name="extends",
+            help_text=_("Основной текст статьи с форматированием."),
+        ),
     )
 
     # — непереводимые —
@@ -80,6 +113,9 @@ class Article(TranslatableModel):
             validate_image_size,
             validate_image_resolution,
         ],
+        help_text=_(
+            "Макс. размер 2 МБ. Разрешение до 1920x1080px. Допустимые форматы: jpg, jpeg, png, webp."
+        ),
     )
     cover_thumbnail = models.ImageField(
         _("миниатюра"),
@@ -87,6 +123,7 @@ class Article(TranslatableModel):
         null=True,
         blank=True,
         editable=False,
+        help_text=_("Создаётся автоматически при загрузке обложки."),
     )
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -94,16 +131,39 @@ class Article(TranslatableModel):
         null=True,
         related_name="articles",
         verbose_name="автор",
+        help_text=_("Пользователь, создавший статью."),
     )
     status = models.CharField(
-        _("статус"), max_length=10, choices=Status.choices, default=Status.DRAFT
+        _("статус"),
+        max_length=10,
+        choices=Status.choices,
+        default=Status.DRAFT,
+        help_text=_("Текущий статус публикации статьи."),
     )
     views_count = models.PositiveIntegerField(
-        _("кол-во просмотров"), default=0, editable=False
+        _("кол-во просмотров"),
+        default=0,
+        editable=False,
+        help_text=_("Количество просмотров статьи (автоматически обновляется)."),
     )
-    published_at = models.DateTimeField(_("дата публикации"), null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    published_at = models.DateTimeField(
+        _("дата публикации"),
+        null=True,
+        blank=True,
+        help_text=_(
+            "Статья станет видимой как опубликованная только после наступления указанной даты и времени."
+        ),
+    )
+    created_at = models.DateTimeField(
+        _("Время создания статьи"),
+        auto_now_add=True,
+        help_text=_("Дата и время создания записи (устанавливается автоматически)."),
+    )
+    updated_at = models.DateTimeField(
+        _("Время последнего изменения статьи"),
+        auto_now=True,
+        help_text=_("Дата и время последнего обновления записи."),
+    )
 
     class Meta:
         verbose_name = _("статья")
