@@ -209,3 +209,5 @@ DATABASES = {
         "PORT": os.getenv("POSTGRES_PORT", "6789"),
     }
 }
+
+SITE_URL = "http://185.129.49.25:9999"
