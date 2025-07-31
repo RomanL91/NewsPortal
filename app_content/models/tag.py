@@ -2,6 +2,17 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from parler.models import TranslatableModel, TranslatedFields
+from parler.managers import TranslatableManager, TranslatableQuerySet
+
+
+class TagQuerySet(TranslatableQuerySet):
+    """QuerySet с поддержкой языка."""
+
+    pass
+
+
+class TagManager(TranslatableManager):
+    _queryset_class = TagQuerySet
 
 
 class Tag(TranslatableModel):
@@ -11,6 +22,8 @@ class Tag(TranslatableModel):
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
+
+    objects = TagManager()
 
     class Meta:
         verbose_name = _("тег")
