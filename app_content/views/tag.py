@@ -17,7 +17,7 @@ class TagViewSet(viewsets.ViewSet):
 
     def list(self, request):
         lang = self._get_lang(request)
-        queryset = Tag.objects.language(lang).all().distinct("id")
+        queryset = Tag.objects.language(lang).order_by("id").distinct("id")
 
         paginator = LimitOffsetPagination()
         page = paginator.paginate_queryset(queryset, request)
