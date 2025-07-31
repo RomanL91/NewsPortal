@@ -166,29 +166,31 @@ class ArticleAdmin(TranslatableAdmin, VersionAdmin, admin.ModelAdmin):
         ),
     )
 
-    def formfield_for_manytomany(self, db_field, request=None, **kwargs):
+    # def formfield_for_manytomany(self, db_field, request=None, **kwargs):
+    #     lang = getattr(request, "LANGUAGE_CODE", "ru")
+    #     if db_field.name == "tags":
+    #         kwargs["queryset"] = (
+    #             Tag.objects.language(lang).order_by("id").distinct("id")
+    #         )
+    #     if db_field.name == "category":
+    #         kwargs["queryset"] = (
+    #             Category.objects.language(lang).order_by("id").distinct("id")
+    #         )
+    #     return super().formfield_for_manytomany(db_field, request, **kwargs)
+
+    def get_queryset(self, request):
+        # Ограничим queryset по текущему языку
         lang = getattr(request, "LANGUAGE_CODE", "ru")
-        if db_field.name == "tags":
-            kwargs["queryset"] = (
-                Tag.objects.language(lang).order_by("id").distinct("id")
-            )
-        if db_field.name == "category":
-            kwargs["queryset"] = (
-                Category.objects.language(lang).order_by("id").distinct("id")
-            )
-        return super().formfield_for_manytomany(db_field, request, **kwargs)
+        qs = super().get_queryset(request)
+        return qs.language(lang).order_by("id").distinct("id")
 
     def get_search_results(self, request, queryset, search_term):
+        # Поиск для autocomplete
         lang = getattr(request, "LANGUAGE_CODE", "ru")
-
-        # Оригинальный поиск
         queryset, use_distinct = super().get_search_results(
             request, queryset, search_term
         )
-
-        # Принудительно фильтруем по языку и убираем дубли
         queryset = queryset.language(lang).order_by("id").distinct("id")
-
         return queryset, use_distinct
 
 
