@@ -166,6 +166,13 @@ class ArticleAdmin(TranslatableAdmin, VersionAdmin, admin.ModelAdmin):
         ),
     )
 
+    def formfield_for_manytomany(self, db_field, request=None, **kwargs):
+        if db_field.name == "tags":
+            kwargs["queryset"] = Tag.objects.order_by("id").distinct("id")
+        if db_field.name == "category":
+            kwargs["queryset"] = Category.objects.order_by("id").distinct("id")
+        return super().formfield_for_manytomany(db_field, request, **kwargs)
+
 
 @admin.register(Category)
 class CategoryAdmin(TranslatableAdmin, DjangoMpttAdmin):
