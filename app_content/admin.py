@@ -194,3 +194,17 @@ class TagAdmin(TranslatableAdmin):
 
     def get_prepopulated_fields(self, request, obj=None):
         return {"slug": ("name",)}
+
+    def get_queryset(self, request):
+        lang = getattr(request, "LANGUAGE_CODE", "ru")
+        return (
+            super().get_queryset(request).language(lang).order_by("id").distinct("id")
+        )
+
+    def get_search_results(self, request, queryset, search_term):
+        lang = getattr(request, "LANGUAGE_CODE", "ru")
+        queryset, use_distinct = super().get_search_results(
+            request, queryset, search_term
+        )
+        queryset = queryset.language(lang).order_by("id").distinct("id")
+        return queryset, use_distinct
