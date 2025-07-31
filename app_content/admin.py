@@ -178,6 +178,19 @@ class ArticleAdmin(TranslatableAdmin, VersionAdmin, admin.ModelAdmin):
             )
         return super().formfield_for_manytomany(db_field, request, **kwargs)
 
+    def get_search_results(self, request, queryset, search_term):
+        lang = getattr(request, "LANGUAGE_CODE", "ru")
+
+        # Оригинальный поиск
+        queryset, use_distinct = super().get_search_results(
+            request, queryset, search_term
+        )
+
+        # Принудительно фильтруем по языку и убираем дубли
+        queryset = queryset.language(lang).order_by("id").distinct("id")
+
+        return queryset, use_distinct
+
 
 @admin.register(Category)
 class CategoryAdmin(TranslatableAdmin, DjangoMpttAdmin):
