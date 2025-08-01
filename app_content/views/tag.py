@@ -1,6 +1,8 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.pagination import LimitOffsetPagination
+
+from django.db.models import Count
 from django.conf import settings
 
 from app_content.models.tag import Tag
@@ -17,7 +19,12 @@ class TagViewSet(viewsets.ViewSet):
 
     def list(self, request):
         lang = self._get_lang(request)
-        queryset = Tag.objects.language(lang).order_by("id").distinct("id")
+        queryset = (
+            Tag.objects.language(lang)
+            .annotate(article_count=Count("articles"))
+            .order_by("-article_count", "id")
+            .distinct()
+        )
 
         paginator = LimitOffsetPagination()
         page = paginator.paginate_queryset(queryset, request)
