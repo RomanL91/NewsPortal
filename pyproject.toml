@@ -20,6 +20,7 @@ djangorestframework = "^3.16.0"
 django-parler-rest = "^2.2"
 python-dotenv = "^1.1.1"
 psycopg = {extras = ["binary"], version = "^3.2.9"}
+django-cors-headers = "^4.7.0"
 
 
 [build-system]
