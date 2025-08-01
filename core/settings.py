@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # библиотеки
+    "django.contrib.postgres",
     "rest_framework",
     "django_mptt_admin",
     "django_ckeditor_5",
