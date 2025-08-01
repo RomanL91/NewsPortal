@@ -1,11 +1,13 @@
 from django.contrib import admin
 from django.utils.timezone import localtime
 from django.utils.safestring import mark_safe
+from django.contrib.admin import SimpleListFilter
 from django.utils.translation import gettext_lazy as _
 
 from reversion.models import Version
 from reversion.admin import VersionAdmin
 from parler.admin import TranslatableAdmin
+from parler.utils.context import get_language
 from django_mptt_admin.admin import DjangoMpttAdmin
 
 from app_content.models.tag import Tag
@@ -15,6 +17,22 @@ from app_content.models.category import Category
 from app_content.forms.tag import TagAdminForm
 from app_content.forms.article import ArticleAdminForm
 from app_content.forms.category import CategoryAdminForm
+
+
+class TagLanguageAwareFilter(SimpleListFilter):
+    title = _("теги")
+    parameter_name = "tags__id__exact"
+
+    def lookups(self, request, model_admin):
+        lang = getattr(request, "LANGUAGE_CODE", get_language() or "ru")
+        tags = Tag.objects.language(lang).order_by("id").distinct("id")
+        return [(tag.id, tag.safe_translation_getter("name")) for tag in tags]
+
+    def queryset(self, request, queryset):
+        value = self.value()
+        if value:
+            return queryset.filter(tags__id=value)
+        return queryset
 
 
 @admin.register(Article)
@@ -41,7 +59,7 @@ class ArticleAdmin(TranslatableAdmin, VersionAdmin, admin.ModelAdmin):
     list_filter = (
         "status",
         "category",
-        "tags",
+        TagLanguageAwareFilter,
     )
     search_fields = (
         "translations__title",
