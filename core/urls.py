@@ -22,5 +22,7 @@ urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 admin.site.site_header = "SKO24"
-admin.site.index_title = "SKO24 - ЛОЗУНГ!!!"  # default: "Site administration"
+admin.site.index_title = (
+    "Новости, которым доверяют в СКО"  # default: "Site administration"
+)
 admin.site.site_title = "SKO24"  # default: "Django site admin"
