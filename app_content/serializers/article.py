@@ -60,6 +60,7 @@ class ArticleListSerializer(
         fields = [
             "id",
             "title",
+            "summary",
             "slug",
             "cover_thumbnail",
             "author",
