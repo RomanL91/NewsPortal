@@ -1,10 +1,14 @@
+from django.db.models import Prefetch
+
 from rest_framework import viewsets
 from rest_framework.pagination import LimitOffsetPagination
 
 from django.utils import timezone
 from django.conf import settings
 
+from app_content.models.tag import Tag
 from app_content.models.article import Article
+from app_content.models.category import Category
 from app_content.serializers.article import (
     ArticleListSerializer,
     ArticleDetailSerializer,
@@ -21,13 +25,24 @@ class ArticleViewSet(viewsets.ReadOnlyModelViewSet):
         lang = getattr(
             self.request, "LANGUAGE_CODE", getattr(settings, "LANGUAGE_CODE", "ru")
         )
-        qs = (
+        base_qs = (
             Article.objects.language(lang)
             .filter(status="published", published_at__lte=timezone.now())
             .select_related("author")
-            .prefetch_related("tags", "category")
-            .order_by("-published_at")
+            .distinct("id")  # Убираем дубли до префетча
         )
+
+        # Префетч тегов и категорий с DISTINCT уже внутри
+        qs = base_qs.prefetch_related(
+            Prefetch(
+                "tags",
+                queryset=Tag.objects.language(lang).distinct("id").order_by("id"),
+            ),
+            Prefetch(
+                "category",
+                queryset=Category.objects.language(lang).distinct("id").order_by("id"),
+            ),
+        ).order_by("-published_at")
 
         category = self.request.query_params.get("category")
         tag = self.request.query_params.get("tag")
